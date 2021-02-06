@@ -260,6 +260,8 @@
                 android:progress="40"
                 android:progressDrawable="@drawable/progress_style"
                 android:thumb="@drawable/progress_thumb_drawable" />
+
+
         </FrameLayout>
 
         <ImageView
@@ -268,6 +270,53 @@
             android:layout_height="50dp"
             android:layout_above="@id/ff_control"
             android:layout_alignRight="@id/ff_control"
+            android:layout_gravity="center|right"
+            android:background="@drawable/border"
+            android:clickable="true"
+            android:padding="5dp"
+            android:src="@drawable/close_unclick" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/light_control_p"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/menu_item_height"
+        android:clickable="true"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:id="@+id/ll_control"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/border"
+            android:visibility="visible">
+
+            <SeekBar
+                android:id="@+id/light_control"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:max="100"
+                android:maxHeight="6dp"
+                android:progressDrawable="@drawable/progress_style"
+                android:thumb="@drawable/progress_thumb_drawable" />
+
+
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/btnHideLightControl"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_above="@id/ll_control"
+            android:layout_alignRight="@id/ll_control"
             android:layout_gravity="center|right"
             android:background="@drawable/border"
             android:clickable="true"
@@ -580,7 +629,32 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="4dp"
                 tools:text="ftp://192.168.123.121" />
+
+
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000000" />
+
+        <LinearLayout
+            android:id="@+id/change_light"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/menu_item_height"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:text="调节亮度"
+                android:textSize="@dimen/menu_item_text_size" />
+
+
+        </LinearLayout>
+
 
 
 

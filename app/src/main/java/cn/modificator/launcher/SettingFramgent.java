@@ -10,8 +10,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,12 +20,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Method;
+
 import androidx.annotation.NonNull;
 
-import java.util.Observable;
-
 import cn.modificator.launcher.ftpservice.FTPService;
+import cn.modificator.launcher.jdreadutil.DeviceControl;
+import cn.modificator.launcher.jdreadutil.ReflectUtil;
 import cn.modificator.launcher.model.WifiControl;
+
+
+
+
+
+
 
 /**
  * Created by mod on 16-5-3.
@@ -35,9 +43,11 @@ public class SettingFramgent extends Fragment implements View.OnClickListener {
   Spinner row_num_spinner;
   Spinner appNameLinesSpinner;
   SeekBar font_control;
+  SeekBar light_control;
   View rootView;
   TextView hideDivider, ftpAddr, ftpStatus,showStatusBar,showCustomIcon;
-
+  DeviceControl device_control;
+  int LightValue;
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -62,6 +72,7 @@ public class SettingFramgent extends Fragment implements View.OnClickListener {
     ftpAddr = rootView.findViewById(R.id.ftp_addr);
     hideDivider = rootView.findViewById(R.id.hideDivider);
     font_control = rootView.findViewById(R.id.font_control);
+    light_control = rootView.findViewById(R.id.light_control);
     col_num_spinner = rootView.findViewById(R.id.col_num_spinner);
     row_num_spinner = rootView.findViewById(R.id.row_num_spinner);
     appNameLinesSpinner = rootView.findViewById(R.id.appNameLine);
@@ -73,6 +84,11 @@ public class SettingFramgent extends Fragment implements View.OnClickListener {
     hideDivider.getPaint().setStrikeThruText(Config.hideDivider);
     row_num_spinner.setSelection(Config.rowNum - 2, false);
     font_control.setProgress((int) ((Config.fontSize - 10) * 10));
+
+    device_control = new DeviceControl();
+    LightValue  = device_control.getFrontLightValue(getActivity());
+
+    light_control.setProgress(LightValue/2*5);
     showCustomIcon.getPaint().setStrikeThruText(Config.showCustomIcon);
 
     row_num_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -120,7 +136,9 @@ public class SettingFramgent extends Fragment implements View.OnClickListener {
       }
     });
     rootView.findViewById(R.id.btnHideFontControl).setOnClickListener(this);
+    rootView.findViewById(R.id.btnHideLightControl).setOnClickListener(this);
     rootView.findViewById(R.id.changeFontSize).setOnClickListener(this);
+    rootView.findViewById(R.id.change_light).setOnClickListener(this);
     rootView.findViewById(R.id.helpAbout).setOnClickListener(this);
     rootView.findViewById(R.id.menu_ftp).setOnClickListener(this);
 
@@ -136,6 +154,37 @@ public class SettingFramgent extends Fragment implements View.OnClickListener {
         }
       }
 
+
+
+      @Override
+      public void onStartTrackingTouch(SeekBar seekBar) {
+      }
+
+      @Override
+      public void onStopTrackingTouch(SeekBar seekBar) {
+      }
+    });
+
+    light_control.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+      @Override
+      public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if (fromUser) {
+          Log.e("P", String.valueOf(LightValue));
+
+          int light_value = 0;
+          if(progress/5.0 - progress/5 >= 0.5){
+            light_value = progress/5+1;
+          }
+          else{
+            light_value = progress/5;
+          }
+          seekBar.setProgress(light_value*5);
+          device_control.setFrontLightValue(getActivity(),Integer.valueOf(light_value*2));
+          device_control.setFrontLightConfigValue(getActivity(),Integer.valueOf(light_value*2));
+          Log.e("L", String.valueOf(light_value));
+        }
+      }
+
       @Override
       public void onStartTrackingTouch(SeekBar seekBar) {
       }
@@ -147,6 +196,9 @@ public class SettingFramgent extends Fragment implements View.OnClickListener {
 
     updateStatus();
   }
+
+
+
 
   private int getAppLineSpinnerSelectPosition(){
     if (Config.appNameLines<3)return Config.appNameLines;
@@ -182,9 +234,17 @@ public class SettingFramgent extends Fragment implements View.OnClickListener {
         rootView.findViewById(R.id.menuList).setVisibility(View.VISIBLE);
         rootView.findViewById(R.id.font_control_p).setVisibility(View.GONE);
         break;
+      case R.id.btnHideLightControl:
+        rootView.findViewById(R.id.menuList).setVisibility(View.VISIBLE);
+        rootView.findViewById(R.id.light_control_p).setVisibility(View.GONE);
+        break;
       case R.id.changeFontSize:
         rootView.findViewById(R.id.menuList).setVisibility(View.GONE);
         rootView.findViewById(R.id.font_control_p).setVisibility(View.VISIBLE);
+        break;
+      case R.id.change_light:
+        rootView.findViewById(R.id.menuList).setVisibility(View.GONE);
+        rootView.findViewById(R.id.light_control_p).setVisibility(View.VISIBLE);
         break;
       case R.id.hideDivider:
         Config.hideDivider = !Config.hideDivider;

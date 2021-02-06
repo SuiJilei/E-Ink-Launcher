@@ -1,21 +1,23 @@
 //noinspection GradleDynamicVersion
 apply plugin: 'com.android.application'
 //apply plugin: 'com.jakewharton.hugo'
-apply from: '../config.gradle'
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
     signingConfigs {
         config {
-            keyAlias release.keyAlias
-            keyPassword release.keyPassword
-            storeFile release.storeFile
-            storePassword release.storePassword
+            storeFile file(properties.getProperty("keystore_storeFile"))
+            storePassword properties.getProperty("keystore_storePassword")
+            keyAlias properties.getProperty("keystore_keyAlias")
+            keyPassword properties.getProperty("keystore_keyPassword")
         }
     }
     compileSdkVersion 29
     buildToolsVersion '29.0.2'
     defaultConfig {
-        applicationId "cn.modificator.launcher"
+        applicationId "com.onyx.launcher"
         minSdkVersion 14
         targetSdkVersion 29
         versionCode 25
