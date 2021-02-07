@@ -125,6 +125,7 @@ public class FloatViewManager {
 
                         break;
                     case MotionEvent.ACTION_MOVE:
+                        floatBallBtn.setBackgroundResource(R.drawable.float_ball_bg);
                         refreshView((int) (event.getRawX() - temp[0]),
                                 (int) (event.getRawY() - temp[1]));
                         break;
