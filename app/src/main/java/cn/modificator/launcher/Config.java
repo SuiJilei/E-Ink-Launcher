@@ -20,6 +20,7 @@ public class Config {
   public static boolean hideDivider = false;
   public static boolean showStatusBar = false;
   public static boolean showCustomIcon = false;
+  public static boolean openFloatBall = false;
   private String preferencesFileName = "launcherPropertyFile";
   private Set<String> hideApps = new HashSet<>();
 
@@ -27,6 +28,7 @@ public class Config {
     this.context = context;
     getCustomIconShowStatus();
     getDividerHideStatus();
+    getFloatBallStatus();
     getStatusBarShowStatus();
     getAppNameLines();
   }
@@ -110,6 +112,16 @@ public class Config {
     hideDivider = b;
     SharedPreferences preferences = context.getSharedPreferences(preferencesFileName, Context.MODE_PRIVATE);
     preferences.edit().putBoolean(Launcher.LAUNCHER_HIDE_DIVIDER, b).apply();
+  }
+
+  public boolean getFloatBallStatus() {
+    return openFloatBall = context.getSharedPreferences(preferencesFileName, Context.MODE_PRIVATE).getBoolean(Launcher.LAUNCHER_OPEN_FLOAT_BALL, true);
+  }
+
+  public void setFloatBallStatus(boolean b) {
+    openFloatBall = b;
+    SharedPreferences preferences = context.getSharedPreferences(preferencesFileName, Context.MODE_PRIVATE);
+    preferences.edit().putBoolean(Launcher.LAUNCHER_OPEN_FLOAT_BALL, b).apply();
   }
 
   public boolean getStatusBarShowStatus(){

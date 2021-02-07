@@ -24,6 +24,7 @@ import java.lang.reflect.Method;
 
 import androidx.annotation.NonNull;
 
+import cn.modificator.launcher.floatball.FloatBallService;
 import cn.modificator.launcher.ftpservice.FTPService;
 import cn.modificator.launcher.jdreadutil.DeviceControl;
 import cn.modificator.launcher.jdreadutil.ReflectUtil;
@@ -45,7 +46,7 @@ public class SettingFramgent extends Fragment implements View.OnClickListener {
   SeekBar font_control;
   SeekBar light_control;
   View rootView;
-  TextView hideDivider, ftpAddr, ftpStatus,showStatusBar,showCustomIcon;
+  TextView hideDivider, ftpAddr, ftpStatus,showStatusBar,showCustomIcon, openFloatBall;
   DeviceControl device_control;
   int LightValue;
   @Override
@@ -71,6 +72,7 @@ public class SettingFramgent extends Fragment implements View.OnClickListener {
     ftpStatus = rootView.findViewById(R.id.ftp_status);
     ftpAddr = rootView.findViewById(R.id.ftp_addr);
     hideDivider = rootView.findViewById(R.id.hideDivider);
+    openFloatBall = rootView.findViewById(R.id.floatBall);
     font_control = rootView.findViewById(R.id.font_control);
     light_control = rootView.findViewById(R.id.light_control);
     col_num_spinner = rootView.findViewById(R.id.col_num_spinner);
@@ -79,9 +81,11 @@ public class SettingFramgent extends Fragment implements View.OnClickListener {
 
     showStatusBar.setOnClickListener(this);
     hideDivider.setOnClickListener(this);
+    openFloatBall.setOnClickListener(this);
     showCustomIcon.setOnClickListener(this);
     showStatusBar.getPaint().setStrikeThruText(Config.showStatusBar);
     hideDivider.getPaint().setStrikeThruText(Config.hideDivider);
+    openFloatBall.getPaint().setStrikeThruText(!Config.openFloatBall);
     row_num_spinner.setSelection(Config.rowNum - 2, false);
     font_control.setProgress((int) ((Config.fontSize - 10) * 10));
 
@@ -169,8 +173,6 @@ public class SettingFramgent extends Fragment implements View.OnClickListener {
       @Override
       public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (fromUser) {
-          Log.e("P", String.valueOf(LightValue));
-
           int light_value = 0;
           if(progress/5.0 - progress/5 >= 0.5){
             light_value = progress/5+1;
@@ -181,7 +183,6 @@ public class SettingFramgent extends Fragment implements View.OnClickListener {
           seekBar.setProgress(light_value*5);
           device_control.setFrontLightValue(getActivity(),Integer.valueOf(light_value*2));
           device_control.setFrontLightConfigValue(getActivity(),Integer.valueOf(light_value*2));
-          Log.e("L", String.valueOf(light_value));
         }
       }
 
@@ -237,6 +238,7 @@ public class SettingFramgent extends Fragment implements View.OnClickListener {
       case R.id.btnHideLightControl:
         rootView.findViewById(R.id.menuList).setVisibility(View.VISIBLE);
         rootView.findViewById(R.id.light_control_p).setVisibility(View.GONE);
+        getActivity().onBackPressed();
         break;
       case R.id.changeFontSize:
         rootView.findViewById(R.id.menuList).setVisibility(View.GONE);
@@ -245,6 +247,7 @@ public class SettingFramgent extends Fragment implements View.OnClickListener {
       case R.id.change_light:
         rootView.findViewById(R.id.menuList).setVisibility(View.GONE);
         rootView.findViewById(R.id.light_control_p).setVisibility(View.VISIBLE);
+
         break;
       case R.id.hideDivider:
         Config.hideDivider = !Config.hideDivider;
@@ -253,6 +256,17 @@ public class SettingFramgent extends Fragment implements View.OnClickListener {
         intent = new Intent();
         intent.putExtra(Launcher.LAUNCHER_HIDE_DIVIDER, Config.hideDivider);
         intent.setAction(Launcher.LAUNCHER_ACTION);
+        getActivity().sendBroadcast(intent);
+        getActivity().onBackPressed();
+        break;
+      case R.id.floatBall:
+        Config.openFloatBall = !Config.openFloatBall;
+        openFloatBall.setText(Config.openFloatBall ? "打开悬浮球" : "关闭悬浮球");
+
+        intent = new Intent();
+        intent.putExtra(Launcher.LAUNCHER_OPEN_FLOAT_BALL, Config.openFloatBall);
+        intent.setAction(Launcher.LAUNCHER_ACTION);
+
         getActivity().sendBroadcast(intent);
         getActivity().onBackPressed();
         break;

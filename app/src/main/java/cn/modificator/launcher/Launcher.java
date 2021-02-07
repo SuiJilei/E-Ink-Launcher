@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import cn.modificator.launcher.floatball.FloatBallService;
 import cn.modificator.launcher.ftpservice.FTPReceiver;
 import cn.modificator.launcher.ftpservice.FTPService;
 import cn.modificator.launcher.model.AdminReceiver;
@@ -51,7 +52,7 @@ public class Launcher extends Activity {
   public static final String LAUNCHER_ACTION = "launcherReceiver";
   public static final String LAUNCHER_FONT_SIZE = "launcherFontSize";
   public static final String LAUNCHER_HIDE_DIVIDER = "launcherHideDivider";
-
+  public static final String LAUNCHER_OPEN_FLOAT_BALL = "launcherOpenFloatBall";
   EInkLauncherView launcherView;
   AppDataCenter dataCenter = null;
   Config config;
@@ -102,6 +103,7 @@ public class Launcher extends Activity {
     launcherView.setHideAppPkg(config.getHideApps());
     launcherView.setHideDivider(config.getDividerHideStatus());
     launcherView.setFontSize(config.getFontSize());
+    launcherView.openFloatBall(config.getFloatBallStatus());
 
     dataCenter = new AppDataCenter(this);
     dataCenter.setHideApps(config.getHideApps());
@@ -293,7 +295,13 @@ public class Launcher extends Activity {
       } else if (bundle.containsKey(LAUNCHER_HIDE_DIVIDER)) {
         launcherView.setHideDivider(bundle.getBoolean(LAUNCHER_HIDE_DIVIDER));
         config.setDividerHideStatus(bundle.getBoolean(LAUNCHER_HIDE_DIVIDER));
-      }else if (bundle.containsKey(LAUNCHER_SHOW_STATUS_BAR)){
+      }else if(bundle.containsKey(LAUNCHER_OPEN_FLOAT_BALL))
+      {
+        launcherView.openFloatBall(bundle.getBoolean(LAUNCHER_OPEN_FLOAT_BALL));
+        config.setFloatBallStatus(bundle.getBoolean(LAUNCHER_OPEN_FLOAT_BALL));
+      }
+
+      else if (bundle.containsKey(LAUNCHER_SHOW_STATUS_BAR)){
         config.setStatusBarShowStatus(bundle.getBoolean(LAUNCHER_SHOW_STATUS_BAR));
         toggleStatusBar();
       }else if (bundle.containsKey(LAUNCHER_SHOW_CUSTOM_ICON)){

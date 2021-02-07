@@ -34,6 +34,7 @@ import java.util.Set;
 import cn.modificator.launcher.Config;
 import cn.modificator.launcher.Launcher;
 import cn.modificator.launcher.R;
+import cn.modificator.launcher.floatball.FloatBallService;
 import cn.modificator.launcher.model.AppDataCenter;
 import cn.modificator.launcher.model.ObservableFloat;
 import cn.modificator.launcher.model.WifiControl;
@@ -86,6 +87,18 @@ public class EInkLauncherView extends ViewGroup{
   public void setHideDivider(boolean hideDivider) {
     this.hideDivider = hideDivider;
     resetIconLayout();
+  }
+
+  public void openFloatBall(boolean flag)
+  {
+    Intent intent = new Intent(getContext(), FloatBallService.class);
+    if(flag) {
+      Log.e("E","openFloatBall");
+      getContext().startService(intent);
+    } else {
+      Log.e("E","closeFloatBall");
+      getContext().stopService(intent);
+    }
   }
 
   public Set<String> getHideAppPkg() {

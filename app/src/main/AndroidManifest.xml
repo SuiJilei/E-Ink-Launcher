@@ -18,7 +18,7 @@
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -31,6 +31,10 @@
             android:name=".ftpservice.FTPService"
             android:enabled="true"
             android:exported="true" />
+
+        <service
+            android:name=".floatball.FloatBallService"
+            android:enabled="true" />
 
         <receiver
             android:name=".model.AdminReceiver"
