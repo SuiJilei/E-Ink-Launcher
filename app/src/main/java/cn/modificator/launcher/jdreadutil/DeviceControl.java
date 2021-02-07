@@ -31,7 +31,7 @@ public class DeviceControl {
     }
     public int getFrontLightConfigValue(Context context)
     {
-        return  (Integer) invokeMethod(context,getFrontLightValueMethod, context);
+        return  (Integer) invokeMethod(context,getFrontLightConfigValueMethod, context);
     }
     public void setFrontLightConfigValue(Context context,int v)
     {
