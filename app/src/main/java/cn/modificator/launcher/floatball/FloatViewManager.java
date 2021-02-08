@@ -204,7 +204,7 @@ public class FloatViewManager {
             public boolean onLongClick(View v) {
                 //匿名内部类实现点击事件
                 try {
-                    Thread.sleep(240);
+                    Thread.sleep(200);
                 } catch(InterruptedException ex) {
                     Thread.currentThread().interrupt();
                 }
