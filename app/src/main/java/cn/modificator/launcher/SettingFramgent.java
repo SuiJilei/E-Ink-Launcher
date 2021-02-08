@@ -10,7 +10,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +19,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Method;
-
 import androidx.annotation.NonNull;
 
-import cn.modificator.launcher.floatball.FloatBallService;
+import cn.modificator.launcher.floatball.FloatViewManager;
 import cn.modificator.launcher.ftpservice.FTPService;
 import cn.modificator.launcher.jdreadutil.DeviceControl;
-import cn.modificator.launcher.jdreadutil.ReflectUtil;
 import cn.modificator.launcher.model.WifiControl;
 
 
@@ -49,6 +45,7 @@ public class SettingFramgent extends Fragment implements View.OnClickListener {
   TextView hideDivider, ftpAddr, ftpStatus,showStatusBar,showCustomIcon, openFloatBall;
   DeviceControl device_control;
   int LightValue;
+  private FloatViewManager manager;
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -90,10 +87,11 @@ public class SettingFramgent extends Fragment implements View.OnClickListener {
     font_control.setProgress((int) ((Config.fontSize - 10) * 10));
 
     device_control = new DeviceControl();
-    LightValue  = device_control.getFrontLightValue(getActivity());
+    LightValue  = device_control.getFrontLightConfigValue(getActivity());
 
-    light_control.setProgress(LightValue/2*5);
+    light_control.setProgress(LightValue*5);
     showCustomIcon.getPaint().setStrikeThruText(Config.showCustomIcon);
+    manager = FloatViewManager.getInstance(getActivity());
 
     row_num_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
@@ -181,8 +179,8 @@ public class SettingFramgent extends Fragment implements View.OnClickListener {
             light_value = progress/5;
           }
           seekBar.setProgress(light_value*5);
-          device_control.setFrontLightValue(getActivity(),Integer.valueOf(light_value*2));
-          device_control.setFrontLightConfigValue(getActivity(),Integer.valueOf(light_value*2));
+          device_control.setFrontLightValue(getActivity(),Integer.valueOf(light_value));
+          device_control.setFrontLightConfigValue(getActivity(),Integer.valueOf(light_value));
         }
       }
 
@@ -246,8 +244,8 @@ public class SettingFramgent extends Fragment implements View.OnClickListener {
         break;
       case R.id.change_light:
         rootView.findViewById(R.id.menuList).setVisibility(View.GONE);
-        rootView.findViewById(R.id.light_control_p).setVisibility(View.VISIBLE);
-
+        //rootView.findViewById(R.id.light_control_p).setVisibility(View.VISIBLE);
+        manager.showFloatMenu();
         break;
       case R.id.hideDivider:
         Config.hideDivider = !Config.hideDivider;

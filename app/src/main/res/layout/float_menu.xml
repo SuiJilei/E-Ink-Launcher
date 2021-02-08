@@ -6,20 +6,89 @@
     <LinearLayout
         android:id="@+id/float_menu_layout"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="120dp"
         android:layout_alignParentBottom="true"
-        android:background="#556f7f8f"
+        android:background="@drawable/top_line"
         android:clickable="true"
-        android:gravity="center"
+
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="---" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/close_front_light"
+                        android:layout_width="50dp"
+                        android:layout_height="28dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:background="@drawable/rectangle_small"
+                        android:gravity="center"
+                        android:text="关闭"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                    <RatingBar
+                        android:id="@+id/light_settings_bar"
+                        style="@style/LightSettingsRatingBarStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="25dp"
+                        android:numStars="20"
+                        android:progressDrawable="@drawable/reader_light_bar_step"
+                        android:stepSize="1.0" />
+
+
+
+
+                    <TextView
+                        android:id="@+id/full_front_light"
+                        android:layout_width="50dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/rectangle_small"
+                        android:gravity="center"
+                        android:text="最亮"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+            <!--            <ImageButton
+                            android:id="@id/imagebutton_light_add"
+                            android:background="@drawable/button_focus_background"
+                            android:layout_width="@dimen/dialog_brightness_button_width"
+                            android:layout_height="@dimen/dialog_brightness_button_width"
+                            android:layout_marginRight="@dimen/dialog_brightness_button_margin_right"
+                            android:src="@drawable/ic_light_add" android:scaleType="fitCenter"
+                            android:contentDescription="@drawable/ic_light_add" />-->
+        </LinearLayout>
+
 
     </LinearLayout>
+
+
 </RelativeLayout>

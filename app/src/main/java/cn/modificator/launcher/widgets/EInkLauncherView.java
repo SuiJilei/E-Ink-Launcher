@@ -12,6 +12,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.PowerManager;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -24,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -32,8 +34,11 @@ import java.util.Observer;
 import java.util.Set;
 
 import cn.modificator.launcher.Config;
+import cn.modificator.launcher.EInkAccessibilityService;
 import cn.modificator.launcher.Launcher;
 import cn.modificator.launcher.R;
+import cn.modificator.launcher.Utils;
+import cn.modificator.launcher.floatball.AccessibilityUtil;
 import cn.modificator.launcher.floatball.FloatBallService;
 import cn.modificator.launcher.model.AppDataCenter;
 import cn.modificator.launcher.model.ObservableFloat;
@@ -91,13 +96,39 @@ public class EInkLauncherView extends ViewGroup{
 
   public void openFloatBall(boolean flag)
   {
+      if(!AccessibilityUtil.isAccessibilitySettingsOn(getContext())&&flag)
+      {
+        final AlertDialog.Builder normalDialog = new AlertDialog.Builder(getContext());
+        normalDialog.setTitle("提示");
+        normalDialog.setMessage("注意:返回键功能需开启辅助功能\n1.单机返回\n2.双击回到桌面\n3.长按弹窗");
+        normalDialog.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                  @Override
+                  public void onClick(DialogInterface dialog, int which) {
+                    // 显示
+
+                    Intent i = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    getContext().startActivity(i);
+                  }
+                });
+        normalDialog.setNegativeButton("关闭",
+                new DialogInterface.OnClickListener() {
+                  @Override
+                  public void onClick(DialogInterface dialog, int which) {
+                    //...To-do
+                  }
+                });
+        normalDialog.show();
+      }
+    Intent asintent = new Intent(getContext(), EInkAccessibilityService.class);
     Intent intent = new Intent(getContext(), FloatBallService.class);
     if(flag) {
-      Log.e("E","openFloatBall");
+      getContext().startService(asintent);
       getContext().startService(intent);
     } else {
-      Log.e("E","closeFloatBall");
       getContext().stopService(intent);
+      getContext().stopService(asintent);
     }
   }
 

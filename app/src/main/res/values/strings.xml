@@ -73,4 +73,5 @@
     <string name="show_custom_icon">Show custom icon</string>
     <string name="notification_click_back_launcher">Click here, back to Launcher</string>
     <string name="app_show_name">App name</string>
+    <string name="accessibility">开启悬浮球辅助功能</string>
 </resources>

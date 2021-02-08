@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
-    <solid android:color="#99999999" />
-    <size
-        android:width="28dp"
-        android:height="28dp"></size>
-</shape>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="ring"
+            android:innerRadius="30dp"
+            android:thickness="2dp"
+            android:useLevel="false">
+            <solid android:color="@color/black" />
+        </shape>
+    </item>
+
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="ring"
+            android:innerRadius="25dp"
+            android:thickness="3dp"
+            android:useLevel="false">
+            <solid android:color="@color/black" />
+        </shape>
+    </item>
+
+</layer-list>
